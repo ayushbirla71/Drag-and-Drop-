@@ -2,11 +2,12 @@ const taskModel=require('../model/taskModel');
 const createTask= async (req,res)=>{
     try {
         let data=req.body
+        console.log(data)
         if(Object.keys(data).length==0){return res.status(400).send({status:false,message:"Pls provide Details"})}
         let {Title,Description,Deadline}=data
         if(!Title){return res.status(400).send({status:false,message:"Title is mandetry"})}
         const taskData= await taskModel.create(data)
-        return res.status(201).send({status:true,data:taskData})
+        return res.status(201).send({status:true,message:"done",data:taskData})
     } catch (error) {
         return res.status(500).send({status:false,message:error.message})
     }
