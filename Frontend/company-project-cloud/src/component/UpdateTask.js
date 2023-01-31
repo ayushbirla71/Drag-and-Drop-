@@ -1,86 +1,124 @@
-import axios from "axios";
-import React from "react";
+
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import axios from "axios";
 
 const UpdateTask = () => {
-  const { searchQuery } = useParams();
-  let [data, setData] = useState([]);
-  console.log(data);
+    let [demo, setDemo] = useState([])
+    let [error, setError] = useState("")
 
-  useEffect(() => {
-    const api = `http://localhost:3001/getTask`;
-    axios({ method: "get", url: api })
-      .then(
-        (res) => {
-          alert(res.data.message);
-          return res.data.data;
-        },
-        [SubmitEvent]
-      )
-      .then((res) => setData(res))
-      .catch((err) => alert(err.response.data.message));
-  }, [searchQuery]);
-  var getTask=data.map((item,index)=>{
-    let Open
-    let Completed
-    let inProg
-    if(item.Status==="Open"){
-      Open=item.Title
+    const GetAllTasks = () => {
+        axios.get("http://localhost:3001/gettask")
+            .then((res) => { console.log(res.data); setDemo(res.data.data) })
+            .catch((err) => { console.log(err.message); setError(err.message) })
     }
-    if(item.Status==="in-progress"){
-      inProg=item.Title
+    useEffect(() => {
+        GetAllTasks()
+    }, [])
+
+    const dragstart = (e, Title, Status) => {
+        console.log("drag has started")
+        e.dataTransfer.setData("Title", Title)
+        e.dataTransfer.setData("Status", Status)
     }
-    if(item.Status==="Completed"){
-      Completed=item.Title
+
+    const draggingOver = (e) => {
+        e.preventDefault();
+        console.log("Dragged Over now")
     }
-    return  (
-      
-           <tr >
-           <td>{Open}</td>
-           <td>{inProg}</td>
-           <td>{Completed}</td>
-         </tr>
+
+    const dragDropped = (e, Status) => {
+        console.log("You have Dropped")
+        let Title = e.dataTransfer.getData("Title")
+        let task = demo.filter((dem) => {
+            if (dem.Title === Title) {
+                dem.Status = Status
+                axios.put("http://localhost:3001/updateTask", { Title, Status })
+                    .then((res) => { console.log(res.data) })
+                    .catch((err) => { console.log(err.message) })
+            }
+            return dem
+        })
+        setDemo(task)
+    }
+
+    const dragDroppedComp = (e, Status) => {
+        console.log("You have Dropped")
+        let Title = e.dataTransfer.getData("Title")
+        let task = demo.filter((dem) => {
+            if (dem.Title === Title) {
+                dem.Status = Status
+                axios.put("http://localhost:3001/updatetask", { Title, Status })
+                    .then((res) => { console.log(res.data) })
+                    .catch((err) => { console.log(err.message) })
+            }
+            return dem
+        })
+        setDemo(task)
+    }
+
+    return (
+        <div style={{ backgroundColor: "aquamarine", height: "555px" ,flexDirection:"row"}}>
+            <div className="row">
+                {error !== "" && <p>{error}</p>}
+                <div
+                    className="center-block"
+                    style={{ backgroundColor: "#00FFFF", height: "500px", width: "30%", margin: "10px", float: "center", border: "1.5px solid blue", borderRadius: "10px" }}>
+                    <label style={{ borderBottom: "2px solid black", width: "100%", background: "violet", textAlign: "center" }}>
+                        Open</label>
+                    {demo.map((book, index) => {
+                        let { Title, Status, Deadline } = book
+                        if (Status === "Open") {
+                            return <div
+                                key={index} style={{ border: "2px solid yellow", margin: '5px', background: "#FF4500", borderRadius: "10px" }}
+                                draggable onDragStart={(e) => dragstart(e, Title, Status)}>
+                                <p style={{ margin: "1px" }}>Title : {Title} <br /> Deadline :{Deadline.split("T")[0]}</p>
+                            </div>
+                        } else return ''
+                    })}
+                </div>
+
+                <div
+                    className="center-block"
+                    style={{ backgroundColor: "#00FFFF", height: "500px", width: "30%", margin: "10px", float: "center", border: "1.5px solid blue", borderRadius: "10px" }}
+                    onDragOver={(e) => draggingOver(e)}
+                    onDrop={(e) => dragDropped(e, "Work-In-Progress")}>
+                    <label style={{ borderBottom: "2px solid black", width: "100%", background: "violet", textAlign: "center" }}>
+                        Work-In-Progress</label>
+                    {demo.map((book, index) => {
+                        let { Title, Status, Deadline } = book
+                        if (Status === "Work-In-Progress") {
+                            return <div
+                                key={index} style={{ border: "2px solid Lime", margin: '5px', background: "yellow", borderRadius: "10px" }}
+                                draggable onDragStart={(e) => dragstart(e, Title)}>
+                                <p style={{ margin: "1px" }}>Title : {Title} <br /> Deadline :{Deadline.split("T")[0]}</p>
+                            </div>
+                        } else return ''
+                    })}
+                </div>
+
+                <div
+                    className="center-block"
+                    style={{ backgroundColor: "#00FFFF", height: "500px", width: "30%", margin: "10px", float: "center", border: "1.5px solid blue", borderRadius: "10px" }}
+                    onDragOver={(e) => draggingOver(e)}
+                    onDrop={(e) => dragDroppedComp(e, "Completed")}>
+                    <label style={{ borderBottom: "2px solid black", width: "100%", background: "violet", textAlign: "center" }}>
+                        Completed</label>
+                    {demo.map((book, index) => {
+                        let { Title, Status, Deadline } = book
+                        if (Status === "Completed") {
+                            return <div
+                                key={index} style={{ border: "2px solid red", margin: '5px', background: "#7CFC00", borderRadius: "10px" }}
+                                draggable onDragStart={(e) => dragstart(e, Title)}>
+                                <p style={{ margin: "1px" }}>Title : {Title} <br /> Deadline :{Deadline.split("T")[0]}</p>
+                            </div>
+                        } else return ''
+                    })}
+                </div>
+            </div>
+
+        </div>
+
     )
-    })
-
-  return (
-    <DragDropContext>
-      <div className="container">
-        <h2>Task Status Table</h2>
-        <p>The .table-bordered class adds borders to a table:</p>
-        <table className="table table-bordered">
-          <thead>
-            <tr>
-              <th>Open</th>
-              <th>In-Progres</th>
-              <th>Completed</th>
-            </tr>
-          </thead>
-          <Droppable droppableId="tbody">
-             {(provided)=>(
-               <tbody ref={provided.innerRef}{...provided.droppableProps}>
-               {data?.map((item, index)=>(
-                 <Draggable draggableId={item._id}>
-                 {(provided)=>(
-                   <tr ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-
-                   <td>{item._id}</td>
-                   <td>{item.Status}</td>
-                   <td>{item.Title}</td>
-                 </tr>
-                 )}
-                 </Draggable>
-               ))}
-             
-             </tbody>
-             )}
-              </Droppable>
-        </table>
-      </div>
-    </DragDropContext>
-  );
-};
+}
 
 export default UpdateTask;

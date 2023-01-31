@@ -1,22 +1,21 @@
 import CreateTask from './component/CreateTask';
-//import './App.css';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import UpdateTask from './component/UpdateTask';
-// import DrageDrop from './component/DragDrop';
+import AppDragDropDemo from './component/demo';
 
 
 function App() {
   return (
-    <>
+    <div>
     <BrowserRouter>
             <Routes>
-              {/* <Route path='/Home' element={<DrageDrop/>}/> */}
             <Route path="/" element={<CreateTask/>}/>
-            <Route path="/updateTask" element={<UpdateTask/>}/>
+            <Route  path="/updateTask" element={<UpdateTask/>}/>
             </Routes>
     </BrowserRouter>
-</>
+</div>
   );
 }
 
 export default App;
+

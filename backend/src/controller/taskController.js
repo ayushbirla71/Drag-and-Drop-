@@ -15,10 +15,11 @@ const createTask= async (req,res)=>{
 
 const updateTask=async (req,res)=>{
     try {
-        let data=req.body        
-        let {Title}=data
-        if(Title){return res.status(400).send({status:false,message:"Pls provide Title"})}
-        let updatedTask=await taskModel.findOneAndUpdate(Title,{Status:"Completed"},{new:true})
+        let data=req.body     
+        console.log(data)   
+        let {Title,Status}=data
+        if(!Title){return res.status(400).send({status:false,message:"Pls provide Title"})}
+        let updatedTask=await taskModel.findOneAndUpdate({Title},{$set:{Status:Status}},{new:true})
         if(!updatedTask){return res.status(404).send({status:false,message:"not found"})}
         return res.status(200).send({status:true, data:updatedTask})
     } catch (error) {
