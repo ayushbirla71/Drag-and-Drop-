@@ -1,10 +1,11 @@
-
+import { useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react";
 import axios from "axios";
 
 const UpdateTask = () => {
     let [demo, setDemo] = useState([])
     let [error, setError] = useState("")
+    let navigate = useNavigate();
 
     const GetAllTasks = () => {
         axios.get("http://localhost:3001/gettask")
@@ -57,13 +58,14 @@ const UpdateTask = () => {
     }
 
     return (
-        <div style={{ backgroundColor: "aquamarine", height: "555px" ,flexDirection:"row"}}>
-            <div className="row">
-                {error !== "" && <p>{error}</p>}
+        <div style={{backgroundColor: "black", height: "590px", textAlign:"center"}}>
+            <button className="btn btn-info" id="signup" onClick={() => { navigate("/") }}>CreateTask</button>
+            <h1 style={{color:"white"}}> Task Status</h1>
+            <div className="row" style={{ justifyContent:"center", display:"flex" ,backgroundColor:"black"}}>
                 <div
                     className="center-block"
-                    style={{ backgroundColor: "#00FFFF", height: "500px", width: "30%", margin: "10px", float: "center", border: "1.5px solid blue", borderRadius: "10px" }}>
-                    <label style={{ borderBottom: "2px solid black", width: "100%", background: "violet", textAlign: "center" }}>
+                    style={{overflow:"hidden", backgroundColor: "#00FFFF", height: "500px", width: "25%", margin: "10px", float: "center", border: "1.5px solid blue", borderRadius: "10px" }}>
+                    <label style={{ borderBottom: "2px solid black", width: "100%", background: "violet", textAlign: "center",  }}>
                         Open</label>
                     {demo.map((book, index) => {
                         let { Title, Status, Deadline } = book
@@ -79,7 +81,7 @@ const UpdateTask = () => {
 
                 <div
                     className="center-block"
-                    style={{ backgroundColor: "#00FFFF", height: "500px", width: "30%", margin: "10px", float: "center", border: "1.5px solid blue", borderRadius: "10px" }}
+                    style={{overflow:"hidden", backgroundColor: "#00FFFF", height: "500px", width: "25%", margin: "10px", float: "center", border: "1.5px solid blue", borderRadius: "10px" }}
                     onDragOver={(e) => draggingOver(e)}
                     onDrop={(e) => dragDropped(e, "Work-In-Progress")}>
                     <label style={{ borderBottom: "2px solid black", width: "100%", background: "violet", textAlign: "center" }}>
@@ -96,9 +98,10 @@ const UpdateTask = () => {
                     })}
                 </div>
 
+
                 <div
                     className="center-block"
-                    style={{ backgroundColor: "#00FFFF", height: "500px", width: "30%", margin: "10px", float: "center", border: "1.5px solid blue", borderRadius: "10px" }}
+                    style={{overflow:"hidden", backgroundColor: "#00FFFF", height: "500px", width: "25%", margin: "10px", float: "center", border: "1.5px solid blue", borderRadius: "10px" }}
                     onDragOver={(e) => draggingOver(e)}
                     onDrop={(e) => dragDroppedComp(e, "Completed")}>
                     <label style={{ borderBottom: "2px solid black", width: "100%", background: "violet", textAlign: "center" }}>

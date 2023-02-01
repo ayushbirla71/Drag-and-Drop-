@@ -1,45 +1,67 @@
-import React from 'react'
+
 import { useEffect, useState } from "react";
-import { fetchDataFromApi } from '../utils/api';
-import axios from 'axios';
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const CreateTask = () => {
-    let [Title, setTitle] = useState("");
-    let [Description, setDescription]= useState("");
-    // let [Status,setStatus]=useState("");
-    let [Deadline,setDeadline]=useState("");
+  let navigate = useNavigate();
+  let [Title, setTitle] = useState("");
+  let [Description, setDescription] = useState("");
+  let [Deadline, setDeadline] = useState("");
 
-    const TaskdetailsSubmit=()=>{
-        let body={
-            Title,Description,Deadline
-        }
-        const api = `http://localhost:3001/creatTask`;
-        axios({method:'post',
-      url:api,data:body})
-          .then((res)=>{ alert(res.data.message)})
-          .catch((err)=> alert(err.response.data.message))
-    
-    }
-
-
-
+  const TaskdetailsSubmit = () => {
+    let body = {
+      Title,
+      Description,
+      Deadline,
+    };
+    const api = `http://localhost:3001/creatTask`;
+    axios({ method: "post", url: api, data: body })
+      .then((res) => {
+        alert(res.data.message);
+      })
+      .catch((err) => alert(err.response.data.message));
+  };
 
   return (
-    <div> 
-      <div>
-      <label>
+    <div
+      style={{
+        height: "610px",
+        display: "flex",
+        flexDirection: "column",
+        textAlign: "center",
+        alignItems: "center",
+        backgroundColor: "black",
+      }}
+    >
+      <div
+        style={{
+          margin: "30px",
+          height: "300px",
+          justifyItems: "center",
+          textAlign: "center",
+          border: "solid",
+          width: "300px",
+          color: "white",
+        }}
+      >
+        <label>
           Title
+          <br />
           <input
+            style={{ color: "black" }}
             required
             onChange={(e) => {
               setTitle(e.target.value);
             }}
           ></input>
         </label>
-        <br/>
+        <br />
         <label>
           Description
+          <br />
           <input
+            style={{ color: "black" }}
             required
             onChange={(e) => {
               setDescription(e.target.value);
@@ -47,29 +69,46 @@ const CreateTask = () => {
           ></input>
         </label>
 
-        <br/>
+        <br />
         <label>
           Deadline
+          <br />
           <input
+            style={{ color: "black" }}
+            type="date"
             required
             onChange={(e) => {
               setDeadline(e.target.value);
             }}
           ></input>
         </label>
-
+        <br />
+        <button
+          style={{ color: "black" }}
+          className="btn btn-info"
+          type="submit"
+          onClick={() => {
+            TaskdetailsSubmit();
+          }}
+        >
+          {" "}
+          submit
+        </button>
       </div>
-      <button
-        type="submit"
-        onClick={() => {
-          TaskdetailsSubmit();
-        }}
-      >
-        {" "}
-        submit
-      </button>
+      <div>
+        <button
+          style={{ color: "black" }}
+          className="btn btn-info"
+          id="signup"
+          onClick={() => {
+            navigate("/updateTask");
+          }}
+        >
+          Check Task Status
+        </button>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default CreateTask
+export default CreateTask;

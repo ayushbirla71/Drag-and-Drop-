@@ -1,7 +1,6 @@
 import CreateTask from './component/CreateTask';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import UpdateTask from './component/UpdateTask';
-import AppDragDropDemo from './component/demo';
 
 
 function App() {
