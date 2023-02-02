@@ -15,7 +15,7 @@ const CreateTask = () => {
       Description,
       Deadline,
     };
-    const api = `http://localhost:3001/creatTask`;
+    const api = `https://dancing-travesseiro-1edfd3.netlify.app/.netlify/functions/api/creatTask`;
     axios({ method: "post", url: api, data: body })
       .then((res) => {
         alert(res.data.message);

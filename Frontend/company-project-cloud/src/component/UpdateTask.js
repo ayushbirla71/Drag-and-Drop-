@@ -7,7 +7,7 @@ const UpdateTask = () => {
     let navigate = useNavigate();
 
     const GetAllTasks = () => {
-        axios.get("http://localhost:3001/gettask")
+        axios.get("https://dancing-travesseiro-1edfd3.netlify.app/.netlify/functions/api/gettask")
             .then((res) => { console.log(res.data); setDemo(res.data.data) })
             .catch((err) => { console.log(err.message); })
     }
@@ -32,7 +32,7 @@ const UpdateTask = () => {
         let task = demo.filter((dem) => {
             if (dem.Title === Title) {
                 dem.Status = Status
-                axios.put("http://localhost:3001/updateTask", { Title, Status })
+                axios.put("https://dancing-travesseiro-1edfd3.netlify.app/.netlify/functions/api/updateTask", { Title, Status })
                     .then((res) => { console.log(res.data) })
                     .catch((err) => { console.log(err.message) })
             }
@@ -47,7 +47,7 @@ const UpdateTask = () => {
         let task = demo.filter((dem) => {
             if (dem.Title === Title) {
                 dem.Status = Status
-                axios.put("http://localhost:3001/updatetask", { Title, Status })
+                axios.put("https://dancing-travesseiro-1edfd3.netlify.app/.netlify/functions/api/updatetask", { Title, Status })
                     .then((res) => { console.log(res.data) })
                     .catch((err) => { console.log(err.message) })
             }
