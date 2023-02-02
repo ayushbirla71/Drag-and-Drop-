@@ -4,13 +4,12 @@ import axios from "axios";
 
 const UpdateTask = () => {
     let [demo, setDemo] = useState([])
-    let [error, setError] = useState("")
     let navigate = useNavigate();
 
     const GetAllTasks = () => {
         axios.get("http://localhost:3001/gettask")
             .then((res) => { console.log(res.data); setDemo(res.data.data) })
-            .catch((err) => { console.log(err.message); setError(err.message) })
+            .catch((err) => { console.log(err.message); })
     }
     useEffect(() => {
         GetAllTasks()
@@ -101,7 +100,7 @@ const UpdateTask = () => {
 
                 <div
                     className="center-block"
-                    style={{overflow:"hidden", backgroundColor: "#00FFFF", height: "500px", width: "25%", margin: "10px", float: "center", border: "1.5px solid blue", borderRadius: "10px" }}
+                    style={{ backgroundColor: "#00FFFF", height: "500px", width: "25%", margin: "10px", float: "center", border: "1.5px solid blue", borderRadius: "10px" }}
                     onDragOver={(e) => draggingOver(e)}
                     onDrop={(e) => dragDroppedComp(e, "Completed")}>
                     <label style={{ borderBottom: "2px solid black", width: "100%", background: "violet", textAlign: "center" }}>
